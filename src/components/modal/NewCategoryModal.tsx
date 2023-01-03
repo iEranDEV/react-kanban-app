@@ -1,10 +1,11 @@
-import { FormEvent, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { addCategory } from "../../store/categoriesSlice";
 
 function NewCategoryModal({ toggleCategoryModal }: any) {
     const [tables, setTables] = useState(Array<{id: string, name: string, color: string}>());
     const [name, setName] = useState('');
+    const [currentColor, setCurrentColor] = useState('#3b82f6');
 
     const tableName = useRef(null);
     const tableColor = useRef(null);
@@ -16,16 +17,15 @@ function NewCategoryModal({ toggleCategoryModal }: any) {
         toggleCategoryModal();
     }
 
-    const handleTableSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const handleTableSubmit = (event: any) => {
         event.preventDefault();
         if(tableName.current && tableColor.current) {
             setTables([...tables, {
                 id: crypto.randomUUID(),
                 name: (tableName.current as any).value as string,
-                color: (tableColor.current as any).value as string,
+                color: currentColor
             }]);
             (tableName.current as any).value = '';
-            (tableColor.current as any).value = ''
         }
     }
 
@@ -81,18 +81,24 @@ function NewCategoryModal({ toggleCategoryModal }: any) {
                         })}
                     </div>
 
-                    <form onSubmit={(event) => handleTableSubmit(event)} className='flex w-full flex-col md:flex-row gap-2'>
+                    <div className='flex w-full flex-col md:flex-row gap-2'>
                         <input type="text" className='w-full md:w-1/2 bg-stone-200 px-2 py-1 rounded-xl placeholder-stone-400' placeholder='Table name' ref={tableName} />
                         <div className='w-full md:w-1/2 flex gap-2'>
-                            <input type="text" className='w-1/2 bg-stone-200 px-2 py-1 rounded-xl placeholder-stone-400' placeholder='Color (#FFFFFF)' ref={tableColor} />
-                            <button type='submit' className='text-xs w-1/2 uppercase font-semibold bg-blue-500 py-2 px-4 text-stone-100 rounded-xl hover:bg-blue-500/90 flex gap-2 items-center justify-center'>
+                            <input type="color" className='invisible w-0 h-full bg-stone-200 rounded-xl' ref={tableColor} onChange={e => setCurrentColor(e.target.value)} />
+                            <button onClick={() => (tableColor.current as any).click()} className='w-1/2 text-stone-100 rounded-xl flex justify-center bg-blue-500 items-center gap-2 uppercase font-semibold text-xs' style={{backgroundColor: currentColor}}>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59" />
+                                </svg>
+                                <p>Pick color</p>
+                            </button>
+                            <button onClick={(event) => handleTableSubmit(event)} className='text-xs w-1/2 uppercase font-semibold bg-blue-500 py-2 px-4 text-stone-100 rounded-xl hover:bg-blue-500/90 flex gap-2 items-center justify-center'>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                                 </svg>
                                 Add
                             </button>
                         </div>
-                    </form>
+                    </div>
                 </div>
 
                 <hr />
