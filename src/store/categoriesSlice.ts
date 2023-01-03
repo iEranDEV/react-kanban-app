@@ -10,7 +10,7 @@ const initialState = {
     {
         id: "default2",
         name: "Second category",
-        tables: [{name: "To do", color: "#dc2626"}, {name: "Doing", color: "#eab308"}, {name: "Done", color: "#22c55e"}]
+        tables: [{name: "To do", color: "#eab308"}, {name: "Doing", color: "#eab308"}, {name: "Done", color: "#22c55e"}]
     }),
     currentCategory: "default"
 }
@@ -21,7 +21,7 @@ export const categoriesSlice = createSlice({
     initialState,
 
     reducers: {
-        add: (state, action: PayloadAction<Category>) => {
+        addCategory: (state, action: PayloadAction<Category>) => {
             state.categories.push(action.payload)
         },
         setCurrentCategory: (state, action: PayloadAction<Category>) => {
@@ -30,6 +30,6 @@ export const categoriesSlice = createSlice({
     }
 })
 
-export const { add, setCurrentCategory } = categoriesSlice.actions;
+export const { addCategory, setCurrentCategory } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;

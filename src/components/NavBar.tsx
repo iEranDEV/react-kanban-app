@@ -3,10 +3,19 @@ import { useState } from 'react';
 import type { RootState } from '../store/store';
 import { useSelector } from 'react-redux';
 import CategoryButton from './CategoryButton';
+import NewCategoryModal from './modal/NewCategoryModal';
 
 function NavBar() {
-    // Menu state 
+    // State 
     const [menu, setMenu] = useState(false);
+    const [categoryModal, setCategoryModal] = useState(false);
+
+
+
+    const toggleCategoryModal = () => {
+        setCategoryModal(!categoryModal);
+    }
+
     const toggleMenu = () => {
         setMenu(!menu);
     }
@@ -39,8 +48,10 @@ function NavBar() {
                     })}
                 </div>
 
+                {categoryModal && <NewCategoryModal toggleCategoryModal={toggleCategoryModal} categoryModal={categoryModal}></NewCategoryModal>}
+
                 {/* Add new category button */}
-                <div className="w-full py-2 px-2 rounded-xl items-center justify-start flex gap-4 hover:bg-stone-200 cursor-pointer text-blue-500">
+                <div onClick={toggleCategoryModal} className="w-full py-2 px-2 rounded-xl items-center justify-start flex gap-4 hover:bg-stone-200 cursor-pointer text-blue-500">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
                     </svg>

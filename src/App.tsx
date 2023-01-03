@@ -1,12 +1,11 @@
 import NavBar from './components/NavBar'
+import PageSection from './components/PageSection';
 
 function App() {
 	return (
 		<div className="w-full flex flex-col md:flex-row h-screen">
 			<NavBar></NavBar>
-			<div className='w-full h-full'>
-
-			</div>
+			<PageSection></PageSection>
 		</div>
 	);
 }
