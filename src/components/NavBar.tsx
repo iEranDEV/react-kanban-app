@@ -1,15 +1,21 @@
 import logo from '../logo.png';
 import { useState } from 'react';
+import type { RootState } from '../store/store';
+import { useSelector } from 'react-redux';
+import CategoryButton from './CategoryButton';
 
 function NavBar() {
+    // Menu state 
     const [menu, setMenu] = useState(false);
-
     const toggleMenu = () => {
         setMenu(!menu);
     }
+    
+    // Store
+    const categories = useSelector((state: RootState) => state.categories.categories);
 
 	return (
-		<div className="bg-stone-200 w-full md:w-96 p-4 flex relative justify-between md:justify-start gap-8 items-center md:flex-col border-b-2 border-stone-300 text-stone-700">
+		<div className="bg-stone-100 w-full md:w-96 py-4 px-4 md:px-0 flex relative justify-between md:justify-start gap-8 items-center md:flex-col border-b md:border-b-0 md:border-r border-stone-200 text-stone-700">
             {/* Logo */}
             <div className="flex items-center gap-4">
                 <img src={logo} alt="Logo" className='h-10' />
@@ -17,12 +23,30 @@ function NavBar() {
             </div>
 
             {/* Current list selector */}
-            <div className={`absolute md:static top-0 w-screen h-screen md:w-full md:h-full transition-all duration-300 p-4 bg-stone-500 ${menu ? 'left-0' : '-left-full'}`}>
+            <div className={`absolute md:static top-0 w-screen h-screen md:w-full md:h-full flex flex-col gap-8 transition-all bg-stone-100 duration-300 p-4 ${menu ? 'left-0' : '-left-full'}`}>
                 <div className="flex justify-between items-center md:hidden">
                     <img src={logo} alt="Logo" className='h-10' />
                     <svg onClick={toggleMenu} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-8 h-8">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
+                </div>
+
+                {/* List of categories */}
+                <div className='flex flex-col gap-2'>
+                    <p className='text-xs uppercase font-semibold  text-stone-400'>YOUR CATEGORIES</p>
+                    {categories.map(category => {
+                        return <CategoryButton category={category} key={category.id}></CategoryButton>
+                    })}
+                </div>
+
+                {/* Add new category button */}
+                <div className="w-full py-2 px-2 rounded-xl items-center justify-start flex gap-4 hover:bg-stone-200 cursor-pointer text-blue-500">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                    </svg>
+                    <p className='text-xs uppercase font-semibold'>
+                        Create new category
+                    </p>
                 </div>
             </div>
 
