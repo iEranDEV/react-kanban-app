@@ -63,7 +63,7 @@ function EditCategoryModal({ category, toggleCategoryEdit }: CategoryEditProps) 
     }
 
     return (
-        <div className="fixed z-10 top-0 left-0 w-screen h-screen flex justify-center items-center">
+        <div className="modal">
             {/*<button onClick={() => toggleCategoryModal()}>TEST</button>*/}
             <div className="rounded-xl shadow-xl flex flex-col gap-4 bg-stone-100 p-4 w-full h-full md:h-auto md:w-[40rem]">
                 <div className="flex items-center justify-between">
@@ -77,7 +77,7 @@ function EditCategoryModal({ category, toggleCategoryEdit }: CategoryEditProps) 
                 {/* Category name input */}
                 <div className="flex flex-col gap-1 md:w-[24rem]">
                     <label htmlFor="category_name" className="text-sm uppercase font-semibold text-stone-400">Name</label>
-                    <input value={name} onChange={e => setName(e.target.value)} type="text" name="category_name" id="category_name" className="bg-stone-200 px-2 py-1 rounded-xl placeholder-stone-400" placeholder="Example category name" />
+                    <input value={name} onChange={e => setName(e.target.value)} type="text" name="category_name" id="category_name" className="bg-stone-200 p-2 rounded-xl placeholder-stone-400" placeholder="Example category name" />
                 </div>
 
                 {/* Tables input */}
@@ -99,21 +99,23 @@ function EditCategoryModal({ category, toggleCategoryEdit }: CategoryEditProps) 
                     </div>
 
                     <div className='flex flex-col md:flex-row gap-2'>
-                        <input type="text" className='w-full bg-stone-200 px-2 py-1 rounded-xl placeholder-stone-400' placeholder='Table name' ref={tableName} />
-                        <div className='flex gap-2'>
+                        <input type="text" className='w-full bg-stone-200 p-2 rounded-xl placeholder-stone-400' placeholder='Table name' ref={tableName} />
+                        <div className='flex'>
                             <input type="color" className='invisible w-0 h-full bg-stone-200 rounded-xl' ref={tableColor} onChange={e => setCurrentColor(e.target.value)} />
-                            <button onClick={() => (tableColor.current as any).click()} className='px-4 w-1/2 md:w-max text-stone-100 rounded-xl flex justify-center bg-blue-500 items-center gap-2 uppercase font-semibold text-xs' style={{backgroundColor: currentColor}}>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59" />
-                                </svg>
-                                <p>Pick color</p>
-                            </button>
-                            <button onClick={(event) => handleTableSubmit(event)} className='w-1/2 md:w-max text-xs uppercase font-semibold bg-blue-500 py-2 px-4 text-stone-100 rounded-xl hover:bg-blue-500/90 flex gap-2 items-center justify-center'>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                                </svg>
-                                Add
-                            </button>
+                            <div className='w-full flex gap-2'>
+                                <button onClick={() => (tableColor.current as any).click()} className='px-4 w-1/2 md:w-max text-stone-100 rounded-xl flex justify-center bg-blue-500 items-center gap-2 uppercase font-semibold text-xs' style={{backgroundColor: currentColor}}>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59" />
+                                    </svg>
+                                    <p>Pick color</p>
+                                </button>
+                                <button onClick={(event) => handleTableSubmit(event)} className='w-1/2 md:w-max text-xs uppercase font-semibold bg-blue-500 py-2 px-4 text-stone-100 rounded-xl hover:bg-blue-500/90 flex gap-2 items-center justify-center'>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                                    </svg>
+                                    Add
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

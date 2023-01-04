@@ -16,3 +16,7 @@ input[type="color"]::-webkit-color-swatch {
 .task-table {
 	min-width: 200px;
 }
+
+.modal {
+	@apply fixed z-10 top-0 left-0 w-screen h-screen flex justify-center items-center backdrop-blur-[2px] bg-stone-700/40;
+}
