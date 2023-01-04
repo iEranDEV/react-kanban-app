@@ -44,9 +44,9 @@ function NewTableModal({category, toggleCreateTableModal}: NewTableProps) {
 
                     <div className='flex w-full flex-col md:flex-row gap-2'>
                         <input type="text" className='w-full bg-stone-200 p-2 rounded-xl placeholder-stone-400' placeholder='Table name' value={name} onChange={(e) => setName(e.target.value)} />
-                        <div className='flex gap-2'>
+                        <div className='flex'>
                             <input type="color" className='invisible w-0 h-full bg-stone-200 rounded-xl' ref={colorElement} value={color} onChange={(e) => setColor(e.target.value)} />
-                            <button onClick={() => colorElement.current?.click()} className='px-4 w-1/2 md:w-max text-stone-100 rounded-xl flex justify-center bg-blue-500 items-center gap-2 uppercase font-semibold text-xs' style={{backgroundColor: colorElement.current?.value}}>
+                            <button onClick={() => colorElement.current?.click()} className='px-4 py-2 w-full md:w-max text-stone-100 rounded-xl flex justify-center bg-blue-500 items-center gap-2 uppercase font-semibold text-xs' style={{backgroundColor: colorElement.current?.value}}>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
                                     <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59" />
                                 </svg>
