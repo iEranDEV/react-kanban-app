@@ -12,7 +12,7 @@ function TasksTable({ table }: TasksTableProps) {
     }
 
     return (
-        <div className="h-full px-4 flex flex-col gap-2 w-full md:w-60 overflow-y-auto">
+        <div className="h-full px-4 flex flex-col gap-2 w-full md:w-[200px] task-table overflow-y-auto">
             {/* Table header */}
             <div className="w-full flex items-center justify-between">
                 {/* Table name and color */}

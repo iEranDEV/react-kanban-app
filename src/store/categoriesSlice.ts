@@ -29,10 +29,16 @@ export const categoriesSlice = createSlice({
         },
         updateCategory: (state, action: PayloadAction<Category>) => {
             state.categories[state.categories.findIndex(item => item.id === action.payload.id)] = action.payload;
+        },
+        deleteCategory: (state, action: PayloadAction<Category>) => {
+            state.categories.splice(state.categories.findIndex(item => item.id === action.payload.id), 1);
+            if(state.currentCategory === action.payload.id) {
+                state.currentCategory = state.categories[state.categories.length - 1].id;
+            }
         }
     }
 })
 
-export const { addCategory, setCurrentCategory, updateCategory } = categoriesSlice.actions;
+export const { addCategory, setCurrentCategory, updateCategory, deleteCategory } = categoriesSlice.actions;
 
 export default categoriesSlice.reducer;
