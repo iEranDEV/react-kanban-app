@@ -4,16 +4,22 @@ import type { RootState } from '../store/store';
 import { useSelector } from 'react-redux';
 import CategoryButton from './CategoryButton';
 import NewCategoryModal from './modal/NewCategoryModal';
+import EditCategoryModal from './modal/EditCategoryModal';
+
 
 function NavBar() {
     // State 
     const [menu, setMenu] = useState(false);
-    const [categoryModal, setCategoryModal] = useState(false);
+    const [categoryCreate, setCategoryCreate] = useState(false);
+    const [categoryEdit, setCategoryEdit] = useState(null);
 
 
+    const toggleCategoryCreate = () => {
+        setCategoryCreate(!categoryCreate);
+    }
 
-    const toggleCategoryModal = () => {
-        setCategoryModal(!categoryModal);
+    const toggleCategoryEdit = (val: Category) => {
+        setCategoryEdit(val as any)
     }
 
     const toggleMenu = () => {
@@ -44,14 +50,19 @@ function NavBar() {
                 <div className='flex flex-col gap-2'>
                     <p className='text-xs uppercase font-semibold  text-stone-400'>YOUR CATEGORIES</p>
                     {categories.map(category => {
-                        return <CategoryButton category={category} key={category.id}></CategoryButton>
+                        return <CategoryButton toggleCategoryEdit={toggleCategoryEdit} category={category} key={category.id}></CategoryButton>
                     })}
                 </div>
 
-                {categoryModal && <NewCategoryModal toggleCategoryModal={toggleCategoryModal} categoryModal={categoryModal}></NewCategoryModal>}
+                {/* Category edit modal */}
+                {categoryEdit != null && <EditCategoryModal category={categoryEdit} toggleCategoryEdit={toggleCategoryEdit}></EditCategoryModal>}
+
+                {/* Category creating modal */}
+                {categoryCreate && <NewCategoryModal toggleCategoryModal={toggleCategoryCreate} categoryModal={categoryCreate}></NewCategoryModal>}
+
 
                 {/* Add new category button */}
-                <div onClick={toggleCategoryModal} className="w-full py-2 px-2 rounded-xl items-center justify-start flex gap-4 hover:bg-stone-200 cursor-pointer text-blue-500">
+                <div onClick={toggleCategoryCreate} className="w-full py-2 px-2 rounded-xl items-center justify-start flex gap-4 hover:bg-stone-200 cursor-pointer text-blue-500">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
                     </svg>

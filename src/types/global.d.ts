@@ -4,6 +4,6 @@ declare global {
     type Category = {
         id: string,
         name: string,
-        tables: Array<{name:string, color:string}>,
+        tables: Array<{id: string, name:string, color:string}>,
     }
 }
