@@ -1,35 +1,33 @@
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store/store";
-import { addTask } from "../../store/tasksSlice";
+import { updateTask } from "../../store/tasksSlice";
 
-function NewTableModal({ toggleCreateTaskModal }: any) {
+type TaskModalProps = {
+    task: Task,
+    toogleTaskModal: Function
+}
+
+function TaskModal({task, toogleTaskModal}: TaskModalProps) {
     // Store variables
     const categories = useSelector((state: RootState) => state.categories.categories);
-    const currentCategory = useSelector((state: RootState) => state.categories.currentCategory);
     const dispatch = useDispatch();
 
+    // Clone subtasks
+    const clone = () => {
+        let arr = Array<{id: string, value: string, done: boolean}>();
+        task.subtasks.forEach(subtask => arr.push({...subtask}));
+        return arr;
+    }
+
     // State variables
-    const [name, setName] = useState('');
-    const [description, setDescription] = useState('');
-    const [tableID, setTableID] = useState(categories.find(item => item.id === currentCategory)?.tables[0].id);
-    const [subtasks, setSubtasks] = useState(Array<{id: string, value: string, done: boolean}>())
+    const [name, setName] = useState(task.name);
+    const [description, setDescription] = useState(task.description);
+    const [tableID, setTableID] = useState(task.tableID);
+    const [subtasks, setSubtasks] = useState(clone());
 
     // Refs
     const subtaskName = useRef(null);
-
-    // Create new task
-    const submit = () => {
-        toggleCreateTaskModal();
-        dispatch(addTask({
-            id: crypto.randomUUID(),
-            categoryID: currentCategory,
-            tableID: tableID,
-            name: name,
-            description: description, 
-            subtasks: subtasks
-        } as Task));
-    }
 
     // Create new subtask
     const addSubtask = () => {
@@ -49,8 +47,11 @@ function NewTableModal({ toggleCreateTaskModal }: any) {
     // Toggle subtask status
     const toggleSubtaskStatus = (id: string) => {
         let newSubtasks = [...subtasks];
-        newSubtasks[newSubtasks.findIndex(item => item.id === id)].done = !newSubtasks[newSubtasks.findIndex(item => item.id === id)].done;
-        setSubtasks(newSubtasks);
+        const subtask = newSubtasks.find(item => item.id === id);
+        if(subtask) {
+            subtask.done = !subtask?.done;
+            setSubtasks(newSubtasks);
+        }
     }
 
     // Delete subtask
@@ -60,12 +61,26 @@ function NewTableModal({ toggleCreateTaskModal }: any) {
         setSubtasks(newSubtasks);
     }
 
+    // Save
+    const submit = () => {
+        toogleTaskModal(null);
+        dispatch(updateTask({
+            id: task.id,
+            tableID: tableID,
+            categoryID: task.categoryID,
+            name: name,
+            description: description,
+            subtasks: subtasks
+        } as Task))
+    }
+
+
     return (
         <div className="modal">
             <div className="rounded-xl shadow-xl flex flex-col gap-4 bg-stone-100 p-4 w-full h-full md:h-auto md:w-[40rem]">
                 <div className="flex items-center justify-between">
-                    <p className='uppercase font-semibold'>Create new task</p>
-                    <svg onClick={() => toggleCreateTaskModal()} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 cursor-pointer">
+                    <p className='uppercase font-semibold'>Task menu</p>
+                    <svg onClick={() => toogleTaskModal()} xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 cursor-pointer">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </div>
@@ -76,7 +91,7 @@ function NewTableModal({ toggleCreateTaskModal }: any) {
                     <div className="flex flex-col md:flex-row gap-2">
                         <input type="text" className='w-full md:w-1/2 bg-stone-200 p-2 rounded-xl placeholder-stone-400' placeholder='Task name' value={name} onChange={(e) => setName(e.target.value)} />
                         <select value={tableID} onChange={(e) => setTableID(e.target.value)} className='w-full md:w-1/2 bg-stone-200 p-2 rounded-xl text-stone-700'>
-                            {categories.find(item => item.id === currentCategory)?.tables.map(table => {
+                            {categories.find(item => item.id === task.categoryID)?.tables.map(table => {
                                 return <option key={table.id} value={table.id} className='w-full'>{table.name}</option>
                             })}
                         </select>
@@ -125,15 +140,14 @@ function NewTableModal({ toggleCreateTaskModal }: any) {
                 <div className='w-full gap-2 flex items-center justify-end'>
                     <button onClick={() => submit()} className='text-xs w-1/2 md:w-max uppercase font-semibold bg-blue-500 py-2 px-4 text-stone-100 rounded-xl hover:bg-blue-500/90 flex gap-2 items-center justify-center'>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-5 h-5">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                            <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
                         </svg>
-                        Create
+                        Save
                     </button>
                 </div>
             </div>
         </div>
     )
-
 }
 
-export default NewTableModal;
+export default TaskModal;

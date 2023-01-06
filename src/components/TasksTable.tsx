@@ -1,12 +1,15 @@
+import Task from './Task'
+
 type TasksTableProps = {
     table: {
         name: string,
         color: string
     },
-    tasks: Array<Task>
+    tasks: Array<Task>,
+    toogleTaskModal: Function
 }
 
-function TasksTable({ table }: TasksTableProps) {
+function TasksTable({ table, tasks, toogleTaskModal }: TasksTableProps) {
 
     const tableColor = {
         backgroundColor: table.color
@@ -21,6 +24,13 @@ function TasksTable({ table }: TasksTableProps) {
                     <div className="rounded-full h-6 w-6 border-2 border-stone-100" style={tableColor}></div>
                     <p className=" text-sm font-semibold text-stone-700">{table.name}</p>
                 </div>
+            </div>
+
+            {/* Tasks */}
+            <div className="h-full w-full flex flex-col gap-2">
+                {tasks.map(task => {
+                    return <Task toogleTaskModal={toogleTaskModal} task={task} key={task.id}></Task>
+                })}
             </div>
         </div>
     )

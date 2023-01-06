@@ -3,12 +3,14 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 import NewTableModal from "./modal/NewTableModal";
 import NewTaskModal from "./modal/NewTaskModal";
+import TaskModal from "./modal/TaskModal";
 import TasksTable from "./TasksTable";
 
 function PageSection() {
     // State variables
     const [createTableModal, setCreateTableModal] = useState(false);
     const [createTaskModal, setCreateTaskModal] = useState(false);
+    const [taskModal, setTaskModal] = useState(null);
 
     // Store variables
     const categories = useSelector((state: RootState) => state.categories.categories);
@@ -27,6 +29,11 @@ function PageSection() {
     const toggleCreateTaskModal = () => {
         setCreateTaskModal(!createTaskModal);
     }
+
+    // Toggle task edit modal
+    const toogleTaskModal = (val: Task | null) => {
+        setTaskModal(val as any);
+    }
     
     if(currentCategory !== 'none') {
         return (
@@ -43,12 +50,15 @@ function PageSection() {
 
                 {/* Create task modal */}
                 {createTaskModal && <NewTaskModal toggleCreateTaskModal={toggleCreateTaskModal}></NewTaskModal>}
+
+                {/* Edit task modal */}
+                {taskModal != null && <TaskModal toogleTaskModal={toogleTaskModal} task={taskModal}></TaskModal>}
     
                 {/* Main section */}
                 <div className="w-full h-full py-4 flex flex-col md:flex-row md:divide-x">
                     {/* Category tables */}
                     {category.tables.map(table => {
-                        return <TasksTable table={table} key={table.name} tasks={tasks.filter(item => item.tableID === table.id)}></TasksTable>
+                        return <TasksTable table={table} key={table.name} toogleTaskModal={toogleTaskModal} tasks={tasks.filter(item => item.tableID === table.id && item.categoryID === currentCategory)}></TasksTable>
                     })}
     
                     {/* Create new table button */}
