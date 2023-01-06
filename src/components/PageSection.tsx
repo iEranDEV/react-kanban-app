@@ -58,7 +58,7 @@ function PageSection() {
                 <div className="w-full h-full py-4 flex flex-col md:flex-row md:divide-x">
                     {/* Category tables */}
                     {category.tables.map(table => {
-                        return <TasksTable table={table} key={table.name} toogleTaskModal={toogleTaskModal} tasks={tasks.filter(item => item.tableID === table.id && item.categoryID === currentCategory)}></TasksTable>
+                        return <TasksTable table={table} key={table.id} toogleTaskModal={toogleTaskModal} tasks={tasks.filter(item => item.tableID === table.id && item.categoryID === currentCategory)}></TasksTable>
                     })}
     
                     {/* Create new table button */}

@@ -1,7 +1,11 @@
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../store/store'
+import { updateTaskTable } from '../store/tasksSlice'
 import Task from './Task'
 
 type TasksTableProps = {
     table: {
+        id: string,
         name: string,
         color: string
     },
@@ -15,8 +19,21 @@ function TasksTable({ table, tasks, toogleTaskModal }: TasksTableProps) {
         backgroundColor: table.color
     }
 
+    const draggedTask = useSelector((state: RootState) => state.tasks.draggedTask);
+    const dispatch = useDispatch();
+
+    // Handle drop event
+    const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+        if(draggedTask?.tableID !== table.id) {
+            dispatch(updateTaskTable({
+                taskID: draggedTask?.id as string,
+                tableID: table.id,
+            }))
+        }
+    }
+
     return (
-        <div className="h-full px-4 flex flex-col gap-2 w-full md:w-[300px] task-table overflow-y-auto">
+        <div onDragOver={(e) => e.preventDefault()} onDrop={(e) => handleDrop(e)} className="h-full px-4 flex flex-col gap-2 w-full md:w-[300px] task-table overflow-y-auto">
             {/* Table header */}
             <div className="w-full flex items-center justify-between">
                 {/* Table name and color */}

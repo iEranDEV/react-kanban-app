@@ -33,7 +33,7 @@ function NavBar() {
 		<div className="bg-stone-100 w-full md:w-96 py-4 px-4 md:px-0 flex relative justify-between md:justify-start gap-8 items-center md:flex-col border-b md:border-b-0 md:border-r border-stone-200 text-stone-700">
             {/* Logo */}
             <div className="flex items-center gap-4">
-                <img src={logo} alt="Logo" className='h-10' />
+                <img draggable={false} src={logo} alt="Logo" className='h-10' />
                 <p className="text-lg font-semibold md:hidden">Name of selected group</p>
             </div>
 
