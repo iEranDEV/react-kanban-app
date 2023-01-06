@@ -3,6 +3,7 @@ type TasksTableProps = {
         name: string,
         color: string
     },
+    tasks: Array<Task>
 }
 
 function TasksTable({ table }: TasksTableProps) {
